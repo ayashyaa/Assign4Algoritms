@@ -8,10 +8,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.*;
 
-/**
- * Utility class to load graphs from JSON files in /data folder.
- * Expected format: {"0":[1,2],"1":[2],...}
- */
 public class GraphLoader {
 
     public static Map<Integer, List<Integer>> loadGraph(String filePath) {
@@ -21,7 +17,7 @@ public class GraphLoader {
         try (FileReader reader = new FileReader(filePath)) {
             Map<Integer, List<Integer>> g = gson.fromJson(reader, type);
             if (g == null) return Collections.emptyMap();
-            // ensure all nodes with no outgoing edges are present
+     
             Set<Integer> keys = new HashSet<>(g.keySet());
             for (List<Integer> list : g.values()) {
                 for (Integer v : list) {
@@ -35,10 +31,6 @@ public class GraphLoader {
         }
     }
 
-    /**
-     * Utility: build random weighted edges (used by Main to test DAG-SP).
-     * This does not persist — just builds Map<Integer, List<int[]>> with weights 1..9.
-     */
     public static Map<Integer, List<int[]>> toWeighted(Map<Integer, List<Integer>> graph, Random r) {
         Map<Integer, List<int[]>> weighted = new HashMap<>();
         for (int u : graph.keySet()) {
