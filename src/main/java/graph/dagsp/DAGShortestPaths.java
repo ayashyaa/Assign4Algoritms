@@ -1,11 +1,6 @@
 package graph.dagsp;
 
 import java.util.*;
-
-/**
- * Computes shortest/longest paths in a DAG (single-source).
- * Edges are represented as Map<Integer, List<int[]>> where int[]{v, w}.
- */
 public class DAGShortestPaths {
 
     public static class Result {
