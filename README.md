@@ -1,4 +1,4 @@
-#  Assign4Algorithms — Directed Graph Algorithms (Java)
+#  Assign4Algorithms — Directed Graph Algorithms 
 
 ###  Author: Ayazhan Aetova  
 Assignment #4 — *Algorithms and Data Structures*
@@ -20,32 +20,22 @@ All algorithms are modular and designed for clarity, efficiency, and reusability
 ---
 
 ## 📁 Project Structure
-Assign4Algorithms/
-│
-├── data/
-│ ├── small_graph_1.json
-│ ├── small_graph_2.json
-│ ├── small_graph_3.json
-│ ├── medium_graph_1.json
-│ ├── large_graph_1.json
-│ └── ... (test graphs)
-│
-├── src/
-│ ├── main/java/
-│ │ ├── graph/
-│ │ │ ├── dagsp/ → DAGShortestPaths.java
-│ │ │ ├── metrics/ → Metrics.java
-│ │ │ ├── scc/ → SCCFinder.java, Condensation.java
-│ │ │ └── topo/ → TopologicalSort.java
-│ │ └── org/example/ → GraphLoader.java, Main.java
-│ │
-│ └── test/java/org/example/ → TestGraphAlgorithms.java
-│
-├── pom.xml
-└── README.md
+## Project structure (table)
 
+| Path | Description |
+|---|---|
+| `data/` | Input JSON graphs (`small_*`, `medium_*`, `large_*`) |
+| `src/main/java/graph/dagsp/DAGShortestPaths.java` | DAG shortest/longest path algorithms |
+| `src/main/java/graph/scc/SCCFinder.java` | Tarjan’s SCC algorithm |
+| `src/main/java/graph/scc/Condensation.java` | Build condensation DAG |
+| `src/main/java/graph/topo/TopologicalSort.java` | Kahn’s topological sort |
+| `src/main/java/graph/metrics/Metrics.java` | Performance metrics collection |
+| `src/main/java/org/example/GraphLoader.java` | JSON graph loader (Gson) |
+| `src/main/java/org/example/Main.java` | Demo / entry point |
+| `src/test/java/org/example/TestGraphAlgorithms.java` | Unit tests (JUnit 5) |
+| `pom.xml` | Maven build + dependencies |
+| `README.md` | Project documentation |
 
----
 
 ## ⚙️ Implemented Algorithms
 
