@@ -2,15 +2,8 @@ package graph.scc;
 
 import java.util.*;
 
-/**
- * Builds condensation graph (component DAG) from SCC output.
- */
 public class Condensation {
-    /**
-     * @param original graph adjacency list Map<node, List<node>>
-     * @param sccs list of SCCs (each is List<node>)
-     * @return pair: Map<compId, List<compId>> adjacency of condensation DAG and node->compId map
-     */
+  
     public static Map<String, Object> buildCondensation(Map<Integer, List<Integer>> original, List<List<Integer>> sccs) {
         Map<Integer, Integer> nodeToComp = new HashMap<>();
         for (int i = 0; i < sccs.size(); i++) {
