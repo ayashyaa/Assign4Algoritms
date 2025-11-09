@@ -12,32 +12,26 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-/**
- * Main demo: loads a graph from data/ (or path passed as arg), finds SCCs,
- * builds condensation DAG, topologically sorts it and runs DAG shortest/longest path demo.
- */
 public class Main {
     public static void main(String[] args) {
         String filePath = null;
 
-        // 1) Если путь передан аргументом — используем его
         if (args != null && args.length > 0 && args[0] != null && !args[0].isBlank()) {
             filePath = args[0];
             System.out.println("Using graph file from argument: " + filePath);
         } else {
-            // 2) Ищем первый файл типа *_graph_*.json в папке data (project root)
+          
             filePath = findFirstGraphFile("data ");
             if (filePath != null) {
                 System.out.println("Auto-discovered graph file: " + filePath);
             } else {
                 System.err.println("No graph JSON found in data/ — please add one or pass path as an argument.");
-                // friendly hint how to run
+ 
                 System.err.println("Example: Run with argument 'data/small_graph_1.json' or set Run configuration working directory to project root.");
                 System.exit(0);
             }
         }
 
-        // 3) Load graph
         Map<Integer, List<Integer>> graph = GraphLoader.loadGraph(filePath);
         if (graph == null || graph.isEmpty()) {
             System.err.println("Failed to load graph (empty or null). Check JSON format and path: " + filePath);
@@ -45,7 +39,6 @@ public class Main {
         }
         System.out.println("Loaded graph: nodes=" + graph.size());
 
-        // 4) Run SCC with metrics
         Metrics metrics = new Metrics();
         metrics.startTimer();
         SCCFinder sccFinder = new SCCFinder(graph, metrics);
@@ -59,13 +52,11 @@ public class Main {
         System.out.println(String.format("SCC time: %.3f ms, dfs visits: %d, edges: %d",
                 metrics.elapsedNs() / 1_000_000.0, metrics.getDfsVisits(), metrics.getDfsEdges()));
 
-        // 5) Condensation DAG
         Map<String, Object> cond = Condensation.buildCondensation(graph, sccs);
         @SuppressWarnings("unchecked")
         Map<Integer, List<Integer>> condensation = (Map<Integer, List<Integer>>) cond.get("condensation");
         System.out.println("\nCondensation DAG: components=" + condensation.size());
 
-        // 6) Topological sort on condensation
         TopologicalSort topo = new TopologicalSort(metrics);
         List<Integer> topoOrder;
         try {
@@ -77,7 +68,6 @@ public class Main {
             topoOrder = new ArrayList<>(condensation.keySet());
         }
 
-        // 7) Demonstrate shortest/longest paths on weighted condensation DAG
         Map<Integer, List<int[]>> weighted = GraphLoader.toWeighted(condensation, new Random(42));
         DAGShortestPaths dsp = new DAGShortestPaths();
         int source = topoOrder.isEmpty() ? 0 : topoOrder.get(0);
@@ -96,16 +86,13 @@ public class Main {
         System.out.println("\nProgram finished.");
     }
 
-    /**
-     * Find first file matching "*graph*.json" inside the dataDir (non-recursive).
-     * Returns null if nothing found.
-     */
+
     private static String findFirstGraphFile(String dataDir) {
         File d = new File(dataDir);
         if (!d.exists() || !d.isDirectory()) return null;
         File[] files = d.listFiles((dir, name) -> name.toLowerCase().endsWith(".json") && name.toLowerCase().contains("graph"));
         if (files == null || files.length == 0) return null;
-        Arrays.sort(files, Comparator.comparing(File::getName)); // deterministic
+        Arrays.sort(files, Comparator.comparing(File::getName)); 
         return files[0].getPath();
     }
 }
